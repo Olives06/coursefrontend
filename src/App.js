@@ -1,138 +1,108 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Routes,Link } from "react-router-dom";
+import axios from 'axios';
 
-function Home() {
-  return (
-    <center className='py-64'>
-    <nav>
-          <ul className='border-2 text-2xl'>
-            <li><Link to="/add-course">Add Course</Link></li>
-            <li><Link to="/add-instance">Add Instance</Link></li>
-          </ul>
-        </nav>
-        </center>    
-  );
-}
+function AddCourseInstance() {
+  const [year, setYear] = useState('');
+  const [semester, setSemester] = useState('');
+  const [courseTitle, setCourseTitle] = useState('');
+  const [code, setCode] = useState('');
+  const [instances, setInstances] = useState([]);
 
-function AddCourse() {
-  const [formData, setFormData] = useState({
-    title: '',
-    code: '',
-    description: ''
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form Data Submitted:', formData);
+    const newInstance = { year, semester, course_title: courseTitle, code };
+
+    try {
+      const response = await axios.post('/api/course-instances/', newInstance);
+      setInstances([...instances, response.data]);
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
   };
 
   return (
-    <div className="h-screen bg-gray-100 flex items-center justify-center">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-sm">
-    
-        <div className="mb-4">
+    <div className="p-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium">Year</label>
           <input
             type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded"
-            placeholder="Course Title"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            className="border rounded p-2 w-full"
+            placeholder="Enter year"
           />
         </div>
-
-        <div className="mb-4">
-           <input
-            type="text"
-            id="code"
-            name="code"
-            value={formData.code}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded"
-            placeholder="Course Code"
-          />
-        </div>
-
-        <div className="mb-4">
+        <div>
+          <label className="block text-sm font-medium">Select semester</label>
           <input
             type="text"
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded"
-            placeholder="Course Description"
+            value={semester}
+            onChange={(e) => setSemester(e.target.value)}
+            className="border rounded p-2 w-full"
+            placeholder="Enter semester"
           />
         </div>
-
-        <button type="submit" className="w-1/2 bg-blue-500 text-white py-2 ml-20 rounded hover:bg-blue-600">
-          Add Course
+        <div>
+          <label className="block text-sm font-medium">Course Title</label>
+          <input
+            type="text"
+            value={courseTitle}
+            onChange={(e) => setCourseTitle(e.target.value)}
+            className="border rounded p-2 w-full"
+            placeholder="Enter course title"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Code</label>
+          <input
+            type="text"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            className="border rounded p-2 w-full"
+            placeholder="Enter course code"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
+        >
+          Add instance
         </button>
       </form>
+
+      {instances.length > 0 && (
+        <div className="mt-6">
+          <h2 className="text-lg font-semibold">Course Instances</h2>
+          <table className="min-w-full bg-white border">
+            <thead>
+              <tr className="w-full bg-blue-500 text-white">
+                <th className="py-2">Course Title</th>
+                <th className="py-2">Year-Sem</th>
+                <th className="py-2">Code</th>
+                <th className="py-2">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {instances.map((instance, index) => (
+                <tr key={index} className="text-center border-t">
+                  <td className="py-2">{instance.course_title}</td>
+                  <td className="py-2">
+                    {instance.year}-{instance.semester}
+                  </td>
+                  <td className="py-2">{instance.code}</td>
+                  <td className="py-2">
+                    <button className="text-blue-600 hover:text-blue-900">🔍</button>{' '}
+                    <button className="text-red-600 hover:text-red-900">🗑️</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
 
-function AddInstance() {
-  return (
-   
-      <div className="flex flex-col items-center space-y-4 p-4 mt-40">
-        <div className="flex items-center space-x-2">
-          <select className="px-4 py-2 border border-gray-300 rounded-md">
-            <option>Select course</option>
-            <option>Java</option>
-            <option>JavaScript</option>
-            <option>Python</option>
-            <option>Spring Boot</option>
-            <option>Spring</option>
-            <option>ReactJS</option>
-            <option>DJango</option>
-            <option>PostgreSQL</option>
-          </select>
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
-            Refresh
-          </button>
-        </div>
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            placeholder="Year"
-            className="px-4 py-2 border border-gray-300 rounded-md w-32"
-          />
-          <input
-            type="text"
-            placeholder="Semester"
-            className="px-4 py-2 border border-gray-300 rounded-md w-32"
-          />
-        </div>
-        <button className="px-6 py-2 bg-blue-500 text-white rounded-md">
-          Add instance
-        </button>
-      </div>
-    );
-  
-}
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/add-course" element={<AddCourse />} />
-        <Route path="/add-instance" element={<AddInstance />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
-export default App;
+export default AddCourseInstance;
