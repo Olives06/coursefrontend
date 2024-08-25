@@ -3,9 +3,9 @@ import AddInstance from "./coursescompo/addinstance";
 
 function App() {
   return (
-    <div>
-      <AddInstance/>
-    </div>
+        <div>
+            <AddInstance/>
+        </div>
   );
 }
 
