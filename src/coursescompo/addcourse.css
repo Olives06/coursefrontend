@@ -1,0 +1,10 @@
+.table-light tbody tr:nth-child(even) {
+    background-color: #f0000f; /* Light gray */
+}
+
+.table-light tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* White */
+}
+.table{
+    background-color: aqua;
+}
