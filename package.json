@@ -1,14 +1,25 @@
 {
+<<<<<<< HEAD
   "name": "coursesfrontend",
+=======
+  "name": "courses",
+>>>>>>> f9e7180942d42fd59b1fdf4099c36abb5d9611eb
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+<<<<<<< HEAD
     "axios": "^1.7.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+=======
+    "axios": "^1.7.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1",
+>>>>>>> f9e7180942d42fd59b1fdf4099c36abb5d9611eb
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -37,8 +48,11 @@
     ]
   },
   "devDependencies": {
+<<<<<<< HEAD
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.41",
+=======
+>>>>>>> f9e7180942d42fd59b1fdf4099c36abb5d9611eb
     "tailwindcss": "^3.4.10"
   }
 }
